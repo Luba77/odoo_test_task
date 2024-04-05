@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  web:
+    image: odoo:17.0
+    depends_on:
+      - db
+    ports:
+      - "9001:8069"
+    volumes:
+        - ./addons:/mnt/extra-addons
+        - ./etc:/etc/odoo
+    restart: always
+    environment:
+      - POSTGRES_DB=newdb1
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=odoo
+
+
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=newdb1
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:

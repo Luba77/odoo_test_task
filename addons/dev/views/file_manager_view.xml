@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="file_manager_view_template" name="File Manager View">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Uploaded Files</h1>
+                <form action="/upload_file" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file"/>
+                    <button class="btn btn-primary" type="submit" name="storage_option" value="db">Upload to Database</button>
+                    <button class="btn btn-primary" type="submit" name="storage_option" value="disk">Upload to Disk</button>
+                </form>
+                <!-- File list table -->
+                <table class="table table-bordered">
+                    <!-- Table header -->
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Upload Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <!-- Table body -->
+                    <tbody>
+                        <!-- Loop through files from database -->
+                        <t t-foreach="db_files" t-as="db_file">
+                            <tr>
+                                <td><t t-esc="db_file.name"/></td>
+                                <td><t t-esc="db_file.create_date"/></td>
+                                <td><t t-esc="db_file.status"/></td>
+                                <td>
+                                    <a t-att-href="'/remove_file/' + str(db_file.id)" class="btn btn-danger">Remove</a>
+                                </td>
+                            </tr>
+                        </t>
+                        <!-- Loop through files from disk -->
+                        <t t-foreach="disk_files" t-as="disk_file">
+                            <tr>
+                                <td><t t-esc="disk_file"/></td>
+                                <td></td>
+                                <td>Done</td>
+                                <td><t t-esc="disk_file"/></td>
+                                <td>
+                                    <a t-att-href="'/remove_file_disk/' + str(disk_file)" class="btn btn-danger">Remove</a>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>
